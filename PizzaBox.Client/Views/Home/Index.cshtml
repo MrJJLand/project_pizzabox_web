@@ -1,8 +1,10 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿<h2>From the View</h2>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@* Razor View Enginer *@
+
+<ul>
+    @foreach (var item in @ViewBag.Order.Crusts)
+    {
+        <li>@item</li>
+    }
+</ul>
