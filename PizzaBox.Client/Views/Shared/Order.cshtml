@@ -1,0 +1,47 @@
+using Microsoft.AspNetCore.Mvc;
+@model PizzaBox.Client.Models.OrderViewModel
+
+@* The @model functions as a hard-code, making sure only that can view *@
+
+<h2>To Make a Pizza</h2>
+
+<form action="/order" method="post">
+    @Html.AntiForgeryToken()
+
+
+    <fieldset>
+        <legend>Sizes</legend>
+        @foreach (var item in Model.Sizes)
+        {
+            <input type="radio" id="@item" name="selectedsize" value="@item">
+            <label for="@item">@item</label>
+            @Html.ValidationMessageFor(m => m.SelectedSize)
+        }
+    </fieldset>
+
+    <fieldset>
+        <legend>Crusts</legend>
+        @foreach (var item in Model.Crusts)
+        {
+            <input type="radio" id="@item" name="selectedcrust" value="@item">
+            <label for="@item">@item</label>
+            @Html.ValidationMessageFor(m => m.SelectedCrust)
+        }
+
+    </fieldset>
+
+    <fieldset>
+        <legend>Toppings</legend>
+        @foreach (var item in Model.Toppings)
+        {
+            <input type="checkbox" id="@item" name="selectedtoppings" value="@item">
+            <label for="@item">@item</label>
+            @Html.ValidationMessageFor(m => m.SelectedToppings)
+        }
+
+    </fieldset>
+
+    <label>Submit My Pizza Order</label>
+    <button type="submit">Submit</button>
+
+</form>
