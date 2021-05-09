@@ -11,9 +11,13 @@ namespace PizzaBox.Domain.Models
         public Crust Crust;
         public Size Size;
         public List<Topping> Toppings;
+        public Cheese Cheese;
+        public Sauce Sauce;
         public long CrustEntityID;
         public long SizeEntityID;
         public long ToppingEntityID;
+        public long CheeseEntityID;
+        public long SauceEntityID;
         public decimal PizzaPrice { get { return Crust.Price + Size.Price + Toppings.Sum(t => t.Price); } }
     }
 }
