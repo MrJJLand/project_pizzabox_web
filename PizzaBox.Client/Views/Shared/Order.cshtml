@@ -7,7 +7,6 @@
 <form action="/order" method="post">
     @Html.AntiForgeryToken()
 
-
     <fieldset>
         <legend>Choose a Size for Your Pizza</legend>
         @Html.ValidationMessageFor(m => m.SelectedSize)

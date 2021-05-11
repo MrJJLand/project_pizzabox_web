@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using PizzaBox.Domain.Interfaces;
 using PizzaBox.Domain.Models;
 
@@ -27,7 +28,7 @@ namespace PizzaBox.Storing.Repositores
 
         public IEnumerable<Order> Select(Func<Order, bool> filter)
         {
-            throw new System.NotImplementedException();
+            return _context.Orders.Where(filter);
         }
 
         public Order Upgrade()

@@ -1,0 +1,20 @@
+@model PizzaBox.Client.Models.CustomerViewModel
+
+<h2>Customer Menu</h2>
+
+<form action="./home/order">
+
+    <p>
+        <label for="FirstName">Enter Your First Name Here</label>
+        <input type="text" id="FirstName" name="chooseFirstName">
+    </p>
+    <p>
+        <label for="LastName">Enter Your Last Name Here</label>
+        <input type="text" id="LastName" name="chooseLastName">
+    </p>
+
+    <label>Continue to Order</label>
+    <button type="submit">Continue</button>
+</form>
+
+<a href="/home/index">Return to Main Page</a>

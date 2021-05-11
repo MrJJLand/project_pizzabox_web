@@ -12,6 +12,8 @@ namespace PizzaBox.Storing
         public ToppingRepository Toppings { get; }
         public PizzaRepository Pizzas { get; }
         public OrderRepository Orders { get; }
+        public CustomerRepository Customers { get; }
+        public StoreRepository Stores { get; }
 
         public UnitOfWork(PizzaBoxContext context)
         {
@@ -23,6 +25,8 @@ namespace PizzaBox.Storing
             Sauces = new SauceRepository(_context);
             Pizzas = new PizzaRepository(_context);
             Orders = new OrderRepository(_context);
+            Customers = new CustomerRepository(_context);
+            Stores = new StoreRepository(_context);
         }
 
         public void Save()
