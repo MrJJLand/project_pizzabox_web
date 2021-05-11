@@ -26,15 +26,18 @@ jobs:
       - run: dotnet sonarscanner end -d:sonar.login=$SONAR_TOKEN
 
   package:
+    env:
+      DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN}}
+      $DOCKER_USER: ${{ secrets.DOCKER_USER}}
     needs:
       - analyze
     runs-on: ubuntu-20.04
     steps: 
       - uses: actions/checout@v2
-      - run: docker login
+      - run: echo $DOCKER_TOKEN | docker login -u $DOCKER_USER --password-stdin
       - run: docker image build -f Dockerfile -t pizzabox .
-      - run: docker image tag pizzabox jacobpolivka/pizzabox
-      - run: docker push jacobpolivka/pizzabox
+      - run: docker image tag pizzabox mrjjland/pizzabox
+      - run: docker push mrjjland/pizzabox
       - run: docker logout
 
   login:
@@ -43,6 +46,8 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: azure/login@v1
+        with:
+            cred: ${{ secrets.AZURE_CREDENTIALS}}
 
   deploy:
     needs:

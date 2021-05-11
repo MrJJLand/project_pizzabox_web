@@ -24,6 +24,7 @@ namespace PizzaBox.Client.Controllers
         {
             if (ModelState.IsValid)
             {
+                var customer = _uow.Customers.Select(c => c.FirstName == order.SelectedCustomer).First();
                 var crust = _uow.Crusts.Select(c => c.Name == order.SelectedCrust).First();
                 var size = _uow.Sizes.Select(s => s.Name == order.SelectedSize).First();
                 var cheese = _uow.Cheeses.Select(c => c.Name == order.SelectedCheese).First();
