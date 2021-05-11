@@ -13,9 +13,10 @@ namespace PizzaBox.Storing.Repositores
             _context = context;
         }
 
-        public bool Destroy()
+        public bool Destroy(Order entry)
         {
-            throw new System.NotImplementedException();
+            _context.Orders.Remove(entry);
+            return true;
         }
 
         public bool Insert(Order entry)

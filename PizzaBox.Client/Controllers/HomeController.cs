@@ -16,11 +16,17 @@ namespace PizzaBox.Client.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Order()
         {
             var order = new OrderViewModel();
             order.Loader(_uow);
-            return View("order", new OrderViewModel());
+            return View("order", order);
+        }
+        [HttpGet]
+        public IActionResult Index()
+        {
+            //var index = new IndexViewModel();
+            return View("index");
         }
     }
 }

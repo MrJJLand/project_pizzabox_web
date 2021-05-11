@@ -1,10 +1,12 @@
-<h2>Than You For Your Order</h2>
-<a href="/home">home</a>
+<h2>Thank You For Your Order</h2>
 
 @foreach (var item in ViewBag.Order.Pizzas)
 {
-    <p>Crust: @item.Crust</p>
+    <p>Your Pizza will Cost: @item.PizzaPrice</p>
     <p>Size: @item.Size</p>
+    <p>Crust: @item.Crust</p>
+    <p>Sauce: @item.Sauce</p>
+    <p>Cheese: @item.Cheese</p>
     <p>Toppings:</p>
 
     <ul>
@@ -13,5 +15,8 @@
             <li>@topper</li>
         }
     </ul>
-
 }
+
+<p>Your Total is: @ViewBag.Order.OrderTotal</p>
+
+<a href="/home/index">Return to Main Page</a>

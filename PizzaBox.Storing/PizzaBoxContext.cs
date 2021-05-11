@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using PizzaBox.Domain.Abstracts;
 using PizzaBox.Domain.Models;
 
 namespace PizzaBox.Storing
@@ -10,21 +11,73 @@ namespace PizzaBox.Storing
         public DbSet<Topping> Toppings { get; set; }
         public DbSet<Pizza> Pizzas { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<Cheese> Cheeses { get; set; }
+        public DbSet<Sauce> Sauces { get; set; }
+        public DbSet<AStore> Stores { get; set; }
+        public DbSet<Customer> Customers { get; set; }
 
         public PizzaBoxContext(DbContextOptions options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<Order>().HasKey(e => e.EntityID);
             builder.Entity<Crust>().HasKey(e => e.EntityID);
             builder.Entity<Size>().HasKey(e => e.EntityID);
             builder.Entity<Topping>().HasKey(e => e.EntityID);
             builder.Entity<Cheese>().HasKey(e => e.EntityID);
             builder.Entity<Sauce>().HasKey(e => e.EntityID);
+            builder.Entity<Pizza>().HasKey(e => e.EntityID);
+            builder.Entity<AStore>().HasKey(e => e.EntityID);
+            builder.Entity<Customer>().HasKey(e => e.EntityID);
+
+            builder.Entity<ChicagoStore>().HasBaseType<AStore>();
+            builder.Entity<NewYorkStore>().HasBaseType<AStore>();
+
+            builder.Entity<Pizza>().HasOne<Crust>().WithMany();
+            builder.Entity<Pizza>().HasOne<Size>().WithMany();
+            builder.Entity<Pizza>().HasMany<Topping>();
+            builder.Entity<Pizza>().HasOne<Sauce>().WithMany();
+            builder.Entity<Pizza>().HasOne<Cheese>().WithMany();
+            builder.Entity<Pizza>().HasMany<Order>().WithOne();
+            builder.Entity<AStore>().HasMany<Order>(s => s.Orders).WithOne(o => o.Store);
+            builder.Entity<Customer>().HasMany<Order>().WithOne(o => o.Customer);
 
             OnModelSeeding(builder);
         }
 
         private static void OnModelSeeding(ModelBuilder builder)
         {
+            builder.Entity<ChicagoStore>().HasData(new ChicagoStore[]
+            {
+                new ChicagoStore() {EntityID = 1, Name = "Main St."},
+                new ChicagoStore() {EntityID = 2, Name = "West Rd."},
+                new ChicagoStore() {EntityID = 3, Name = "North Ave."},
+                new ChicagoStore() {EntityID = 4, Name = "East St."},
+                new ChicagoStore() {EntityID = 5, Name = "South Cir."}
+            });
+
+            builder.Entity<NewYorkStore>().HasData(new NewYorkStore[]
+            {
+                new NewYorkStore() {EntityID = 6, Name = "South James St."},
+                new NewYorkStore() {EntityID = 7, Name = "Erie Blvd."},
+                new NewYorkStore() {EntityID = 8, Name = "Black River Blvd."},
+                new NewYorkStore() {EntityID = 9, Name = "Name_Pending Rd."},
+                new NewYorkStore() {EntityID = 10, Name = "Artist Ln."}
+            });
+
+            builder.Entity<Customer>().HasData(new Customer[]
+            {
+                new Customer() {EntityID = 1, FirstName = "Elizabeth", LastName = "Gainor"},
+                new Customer() {EntityID = 2, FirstName = "Darth", LastName = "Plagueis"},
+                new Customer() {EntityID = 3, FirstName = "Just", LastName = "Monika"},
+                new Customer() {EntityID = 4, FirstName = "Calli", LastName = "Dream"},
+                new Customer() {EntityID = 5, FirstName = "Kenneth", LastName = "Burtch"}
+            });
+
+            builder.Entity<Order>().HasData(new Order[]
+            {
+                new Order() {EntityID = 1}
+            });
+
             builder.Entity<Crust>().HasData(new Crust[]
             {
                 new Crust() {EntityID = 1, Name = "Original", Price = 0.0m},
@@ -105,7 +158,8 @@ namespace PizzaBox.Storing
                 new Cheese() {EntityID = 2, Name = "Brie", Price = 0.0m},
                 new Cheese() {EntityID = 3, Name = "Cheddar", Price = 0.0m},
                 new Cheese() {EntityID = 4, Name = "Feta", Price = 0.0m},
-                new Cheese() {EntityID = 5, Name = "Swiss", Price = 0.0m}
+                new Cheese() {EntityID = 5, Name = "Swiss", Price = 0.0m},
+                new Cheese() {EntityID = 6, Name = "No Cheese", Price = 0.0m}
             });
             builder.Entity<Sauce>().HasData(new Sauce[]
             {

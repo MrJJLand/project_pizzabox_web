@@ -7,6 +7,8 @@ namespace PizzaBox.Storing
         public readonly PizzaBoxContext _context;
         public CrustRepository Crusts { get; }
         public SizeRepository Sizes { get; }
+        public CheeseRepository Cheeses { get; }
+        public SauceRepository Sauces { get; }
         public ToppingRepository Toppings { get; }
         public PizzaRepository Pizzas { get; }
         public OrderRepository Orders { get; }
@@ -17,6 +19,8 @@ namespace PizzaBox.Storing
             Crusts = new CrustRepository(_context);
             Sizes = new SizeRepository(_context);
             Toppings = new ToppingRepository(_context);
+            Cheeses = new CheeseRepository(_context);
+            Sauces = new SauceRepository(_context);
             Pizzas = new PizzaRepository(_context);
             Orders = new OrderRepository(_context);
         }
@@ -25,6 +29,5 @@ namespace PizzaBox.Storing
         {
             _context.SaveChanges();
         }
-
     }
 }

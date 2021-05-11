@@ -9,6 +9,6 @@ namespace PizzaBox.Domain.Interfaces
         IEnumerable<T> Select(Func<T, bool> filter);
         bool Insert(T entry);
         T Upgrade();
-        bool Destroy();
+        bool Destroy(T entry);
     }
 }
