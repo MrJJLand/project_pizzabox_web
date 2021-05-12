@@ -66,11 +66,11 @@ namespace PizzaBox.Storing
 
             builder.Entity<Customer>().HasData(new Customer[]
             {
-                new Customer() {EntityID = 1, FirstName = "Elizabeth", LastName = "Gainor"},
-                new Customer() {EntityID = 2, FirstName = "Darth", LastName = "Plagueis"},
-                new Customer() {EntityID = 3, FirstName = "Just", LastName = "Monika"},
-                new Customer() {EntityID = 4, FirstName = "Calli", LastName = "Dream"},
-                new Customer() {EntityID = 5, FirstName = "Kenneth", LastName = "Burtch"}
+                new Customer() {EntityID = 1, Name = "Elizabeth Gainor"},
+                new Customer() {EntityID = 2, Name = "Darth Plagueis"},
+                new Customer() {EntityID = 3, Name = "Just Monika"},
+                new Customer() {EntityID = 4, Name = "Calli Dream"},
+                new Customer() {EntityID = 5, Name = "Kenneth Burtch"}
             });
 
             builder.Entity<Order>().HasData(new Order[]

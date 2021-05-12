@@ -24,7 +24,8 @@ namespace PizzaBox.Client.Controllers
         {
             if (ModelState.IsValid)
             {
-                var customer = _uow.Customers.Select(c => c.FirstName == order.SelectedCustomer).First();
+                var customer = _uow.Customers.Select(c => c.Name == order.SelectedCustomer).First();
+                var store = _uow.Stores.Select(s => s.Name == order.SelectedStore).First();
                 var crust = _uow.Crusts.Select(c => c.Name == order.SelectedCrust).First();
                 var size = _uow.Sizes.Select(s => s.Name == order.SelectedSize).First();
                 var cheese = _uow.Cheeses.Select(c => c.Name == order.SelectedCheese).First();
@@ -37,7 +38,7 @@ namespace PizzaBox.Client.Controllers
                 }
 
                 var newPizza = new Pizza { Crust = crust, Size = size, Toppings = toppings, Cheese = cheese, Sauce = sauce };
-                var newOrder = new Order { Pizzas = new List<Pizza> { newPizza } };
+                var newOrder = new Order { Pizzas = new List<Pizza> { newPizza }, Customer = customer, Store = store };
 
                 _uow.Orders.Insert(newOrder);
                 _uow.Save();

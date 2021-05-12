@@ -22,10 +22,21 @@ namespace PizzaBox.Client
             services.AddScoped<UnitOfWork>();
             services.AddDbContext<PizzaBoxContext>(options =>
             {
-                options.UseNpgsql(_config.GetConnectionString("pgsql"), opts =>
+                // if (string.IsNullOrWhiteSpace(_config.GetConnectionString("mssql")))
+                // {
+                //     options.UseSqlServer(_config.GetConnectionString("mssql"), opts =>
+                //     {
+                //         opts.EnableRetryOnFailure(3);
+                //     });
+                // }
+                //else
                 {
-                    opts.EnableRetryOnFailure(3);
-                });
+                    options.UseNpgsql(_config.GetConnectionString("pgsql"), opts =>
+                    {
+                        opts.EnableRetryOnFailure(3);
+                    });
+                }
+
             });
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

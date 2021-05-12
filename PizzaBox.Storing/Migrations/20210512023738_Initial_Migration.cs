@@ -36,6 +36,19 @@ namespace PizzaBox.Storing.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Customers",
+                columns: table => new
+                {
+                    EntityID = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Customers", x => x.EntityID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Sauces",
                 columns: table => new
                 {
@@ -61,6 +74,20 @@ namespace PizzaBox.Storing.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Sizes", x => x.EntityID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Stores",
+                columns: table => new
+                {
+                    EntityID = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Discriminator = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Stores", x => x.EntityID);
                 });
 
             migrationBuilder.CreateTable(
@@ -138,15 +165,29 @@ namespace PizzaBox.Storing.Migrations
                 {
                     EntityID = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    PizzaEntityID = table.Column<long>(type: "bigint", nullable: true)
+                    CustomerEntityID = table.Column<long>(type: "bigint", nullable: true),
+                    PizzaEntityID = table.Column<long>(type: "bigint", nullable: true),
+                    StoreEntityID = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Orders", x => x.EntityID);
                     table.ForeignKey(
+                        name: "FK_Orders_Customers_CustomerEntityID",
+                        column: x => x.CustomerEntityID,
+                        principalTable: "Customers",
+                        principalColumn: "EntityID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_Orders_Pizzas_PizzaEntityID",
                         column: x => x.PizzaEntityID,
                         principalTable: "Pizzas",
+                        principalColumn: "EntityID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Orders_Stores_StoreEntityID",
+                        column: x => x.StoreEntityID,
+                        principalTable: "Stores",
                         principalColumn: "EntityID",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -190,29 +231,46 @@ namespace PizzaBox.Storing.Migrations
                 columns: new[] { "EntityID", "Name", "Price" },
                 values: new object[,]
                 {
+                    { 6L, "Stuffed Crust", 3.0m },
                     { 5L, "Deep Dish", 2.0m },
                     { 4L, "Pretzel", 1.50m },
-                    { 6L, "Stuffed Crust", 3.0m },
                     { 2L, "Thin", 1.0m },
                     { 1L, "Original", 0.0m },
                     { 3L, "Gluten-Free", 1.50m }
                 });
 
             migrationBuilder.InsertData(
+                table: "Customers",
+                columns: new[] { "EntityID", "Name" },
+                values: new object[,]
+                {
+                    { 1L, "Elizabeth Gainor" },
+                    { 2L, "Darth Plagueis" },
+                    { 3L, "Just Monika" },
+                    { 4L, "Calli Dream" },
+                    { 5L, "Kenneth Burtch" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Orders",
+                columns: new[] { "EntityID", "CustomerEntityID", "PizzaEntityID", "StoreEntityID" },
+                values: new object[] { 1L, null, null, null });
+
+            migrationBuilder.InsertData(
                 table: "Sauces",
                 columns: new[] { "EntityID", "Name", "Price" },
                 values: new object[,]
                 {
-                    { 10L, "White Garlic", 0.0m },
-                    { 1L, "Pizza Sauce - Classic", 0.0m },
-                    { 2L, "Pizza Sauce - Exotic", 0.0m },
-                    { 3L, "Buffalo", 0.0m },
-                    { 4L, "Garlic Ranch", 0.0m },
-                    { 5L, "Marinara", 0.0m },
-                    { 6L, "Pesto", 0.0m },
                     { 7L, "Riggie Sauce", 0.0m },
+                    { 1L, "Pizza Sauce - Classic", 0.0m },
                     { 8L, "Sweet BBQ", 0.0m },
-                    { 9L, "Tangy BBQ", 0.0m }
+                    { 9L, "Tangy BBQ", 0.0m },
+                    { 10L, "White Garlic", 0.0m },
+                    { 4L, "Garlic Ranch", 0.0m },
+                    { 3L, "Buffalo", 0.0m },
+                    { 2L, "Pizza Sauce - Exotic", 0.0m },
+                    { 5L, "Marinara", 0.0m },
+                    { 6L, "Pesto", 0.0m }
                 });
 
             migrationBuilder.InsertData(
@@ -222,8 +280,25 @@ namespace PizzaBox.Storing.Migrations
                 {
                     { 3L, "Large", 15.0m },
                     { 4L, "XL", 20.0m },
-                    { 1L, "Small", 10.0m },
-                    { 2L, "Medium", 13.0m }
+                    { 2L, "Medium", 13.0m },
+                    { 1L, "Small", 10.0m }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Stores",
+                columns: new[] { "EntityID", "Discriminator", "Name" },
+                values: new object[,]
+                {
+                    { 10L, "NewYorkStore", "Artist Ln." },
+                    { 1L, "ChicagoStore", "Main St." },
+                    { 2L, "ChicagoStore", "West Rd." },
+                    { 9L, "NewYorkStore", "Name_Pending Rd." },
+                    { 4L, "ChicagoStore", "East St." },
+                    { 5L, "ChicagoStore", "South Cir." },
+                    { 6L, "NewYorkStore", "South James St." },
+                    { 7L, "NewYorkStore", "Erie Blvd." },
+                    { 8L, "NewYorkStore", "Black River Blvd." },
+                    { 3L, "ChicagoStore", "North Ave." }
                 });
 
             migrationBuilder.InsertData(
@@ -231,39 +306,39 @@ namespace PizzaBox.Storing.Migrations
                 columns: new[] { "EntityID", "Name", "PizzaEntityID", "Price" },
                 values: new object[,]
                 {
-                    { 29L, "Lobster", null, 3.00m },
-                    { 30L, "Meatball", null, 1.50m },
-                    { 31L, "Mushrooms", null, 1.00m },
-                    { 32L, "Pemeal Bacon", null, 2.00m },
-                    { 33L, "Pepperoni", null, 1.00m },
-                    { 34L, "Pesto", null, 0.50m },
-                    { 35L, "Pineapple", null, 1.00m },
-                    { 36L, "Prosciutto", null, 2.00m },
                     { 37L, "Pulled Pork", null, 1.50m },
+                    { 36L, "Prosciutto", null, 2.00m },
+                    { 35L, "Pineapple", null, 1.00m },
+                    { 34L, "Pesto", null, 0.50m },
+                    { 32L, "Pemeal Bacon", null, 2.00m },
+                    { 31L, "Mushrooms", null, 1.00m },
+                    { 30L, "Meatball", null, 1.50m },
                     { 38L, "Ranch", null, 0.50m },
+                    { 29L, "Lobster", null, 3.00m },
+                    { 33L, "Pepperoni", null, 1.00m },
                     { 39L, "Red Onion", null, 1.00m },
-                    { 40L, "Riggie Sauce", null, 0.50m },
+                    { 46L, "Shrimp", null, 1.50m },
+                    { 41L, "Salami", null, 1.50m },
                     { 42L, "Sausage", null, 1.50m },
                     { 43L, "Scallions", null, 1.00m },
                     { 44L, "Scallops", null, 1.50m },
                     { 45L, "Shaved Beef", null, 1.50m },
-                    { 46L, "Shrimp", null, 1.50m },
                     { 47L, "Spinach", null, 1.00m },
                     { 48L, "Sun Dried Tomatoes", null, 1.00m },
                     { 49L, "Sweet BBQ Sauce", null, 0.50m },
                     { 50L, "Tangy BBQ Sauce", null, 0.50m },
                     { 51L, "Tomatoes", null, 1.00m },
                     { 28L, "Lamb", null, 2.50m },
-                    { 41L, "Salami", null, 1.50m },
+                    { 40L, "Riggie Sauce", null, 0.50m },
                     { 27L, "Jalepeños", null, 1.00m },
-                    { 14L, "Chicken", null, 1.50m },
+                    { 6L, "Bison", null, 2.50m },
                     { 25L, "Ham", null, 1.50m },
                     { 1L, "American Bacon", null, 1.50m },
                     { 2L, "Anchovies", null, 1.50m },
                     { 3L, "Avocado", null, 1.50m },
                     { 4L, "Banana Peppers", null, 1.00m },
                     { 5L, "Basil", null, 0.50m },
-                    { 6L, "Bison", null, 2.50m },
+                    { 52L, "Venison", null, 3.00m },
                     { 7L, "Black Olives", null, 1.00m },
                     { 8L, "Breakfast Sausage", null, 1.50m },
                     { 9L, "Broccoli", null, 1.00m },
@@ -271,7 +346,7 @@ namespace PizzaBox.Storing.Migrations
                     { 11L, "Buffalo Sauce", null, 0.50m },
                     { 26L, "Italian Greens", null, 1.50m },
                     { 12L, "Canadian Bacon", null, 2.00m },
-                    { 52L, "Venison", null, 3.00m },
+                    { 14L, "Chicken", null, 1.50m },
                     { 15L, "Crab", null, 2.00m },
                     { 16L, "Dill Pickles", null, 0.50m },
                     { 17L, "Eggs", null, 1.00m },
@@ -287,9 +362,19 @@ namespace PizzaBox.Storing.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Orders_CustomerEntityID",
+                table: "Orders",
+                column: "CustomerEntityID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Orders_PizzaEntityID",
                 table: "Orders",
                 column: "PizzaEntityID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_StoreEntityID",
+                table: "Orders",
+                column: "StoreEntityID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Pizzas_CheeseEntityID1",
@@ -358,6 +443,12 @@ namespace PizzaBox.Storing.Migrations
 
             migrationBuilder.DropTable(
                 name: "Orders");
+
+            migrationBuilder.DropTable(
+                name: "Customers");
+
+            migrationBuilder.DropTable(
+                name: "Stores");
 
             migrationBuilder.DropTable(
                 name: "Pizzas");

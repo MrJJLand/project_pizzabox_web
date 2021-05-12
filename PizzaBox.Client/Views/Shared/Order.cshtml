@@ -8,6 +8,26 @@
     @Html.AntiForgeryToken()
 
     <fieldset>
+        <legend>Enter Your Customer Name</legend>
+        @Html.ValidationMessageFor(m => m.SelectedCustomer)
+        @foreach (var item in Model.Customers)
+        {
+            <input type="radio" id="@item" name="selectedcustomer" value="@item">
+            <label for="@item">@item</label>
+        }
+    </fieldset>
+
+    <fieldset>
+        <legend>Choose a Store</legend>
+        @Html.ValidationMessageFor(m => m.SelectedStore)
+        @foreach (var item in Model.Stores)
+        {
+            <input type="radio" id="@item" name="selectedstore" value="@item">
+            <label for="@item">@item</label>
+        }
+    </fieldset>
+
+    <fieldset>
         <legend>Choose a Size for Your Pizza</legend>
         @Html.ValidationMessageFor(m => m.SelectedSize)
         @foreach (var item in Model.Sizes)

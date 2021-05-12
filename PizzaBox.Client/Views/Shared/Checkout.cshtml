@@ -1,20 +1,16 @@
 <h2>Thank You For Your Order</h2>
 
+<p>@ViewBag.Order.Customer.Name</p>
+<p>Your order will be ready in 30 minutes at @ViewBag.Order.Store.Name</p>
 @foreach (var item in ViewBag.Order.Pizzas)
 {
     <p>Your Pizza will Cost: @item.PizzaPrice</p>
-    <p>Size: @item.Size</p>
-    <p>Crust: @item.Crust</p>
-    <p>Sauce: @item.Sauce</p>
-    <p>Cheese: @item.Cheese</p>
-    <p>Toppings:</p>
-
-    <ul>
+    <p>This is a @item.Size @item.Crust Pizza with @item.Sauce for Sauce, @item.Cheese Cheese, and topped with
     @foreach (var topper in item.Toppings)
         {
             <li>@topper</li>
         }
-    </ul>
+    </p>
 }
 
 <p>Your Total is: @ViewBag.Order.OrderTotal</p>

@@ -21,8 +21,7 @@ namespace PizzaBox.Client.Controllers
         {
             if (ModelState.IsValid)
             {
-                var customer = _uow.Customers.Select(c => c.FirstName == _customer.FirstName).First();
-                customer = _uow.Customers.Select(c => c.LastName == _customer.LastName).First();
+                var customer = _uow.Customers.Select(c => c.Name == _customer.Name).First();
             }
             return View("customer", _customer);
         }

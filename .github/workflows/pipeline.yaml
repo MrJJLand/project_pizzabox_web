@@ -40,7 +40,7 @@ jobs:
       - run: docker push mrjjland/pizzabox
       - run: docker logout
 
-  login:
+  deploy:
     needs:
       - package
     runs-on: ubuntu-20.04
@@ -48,15 +48,9 @@ jobs:
       - uses: azure/login@v1
         with:
             cred: ${{ secrets.AZURE_CREDENTIALS}}
-
-  deploy:
-    needs:
-      - login
-    runs-on: ubuntu-20.04
-    steps:
       - uses: azure/webapps-deploy@v2
-        app-name: pizzabox2021
-        images: jacobpolivka/pizzabox
+        app-name: jj-pizzabox
+        images: mrjjland/pizzabox
 
 name: ci-pipeline
 
