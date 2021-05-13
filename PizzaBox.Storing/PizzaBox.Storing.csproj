@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
     <ProjectReference Include="..\PizzaBox.Domain\PizzaBox.Domain.csproj" />
@@ -14,6 +14,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>4e04e78c-987d-4461-aae3-d32a682528cf</UserSecretsId>
   </PropertyGroup>
 
 </Project>

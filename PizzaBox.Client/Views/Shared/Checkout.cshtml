@@ -1,7 +1,7 @@
-<h2>Thank You For Your Order</h2>
+<h2>Thank You For Your Order @ViewBag.Order.Customer.Name</h2>
 
-<p>@ViewBag.Order.Customer.Name</p>
-<p>Your order will be ready in 30 minutes at @ViewBag.Order.Store.Name</p>
+<p></p>
+<p>Your order will be delivered in 30 minutes from @ViewBag.Order.Store.Name</p>
 @foreach (var item in ViewBag.Order.Pizzas)
 {
     <p>Your Pizza will Cost: @item.PizzaPrice</p>

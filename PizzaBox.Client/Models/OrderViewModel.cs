@@ -27,7 +27,7 @@ namespace PizzaBox.Client.Models
 
         public void Loader(UnitOfWork _uow)
         {
-            Customers = _uow.Customers.Select(c => !string.IsNullOrWhiteSpace(c.Name.ToString())).ToList();
+            Customers = _uow.Customers.Select(c => !string.IsNullOrWhiteSpace(c.Name)).ToList();
             Stores = _uow.Stores.Select(s => !string.IsNullOrWhiteSpace(s.Name)).ToList();
             Crusts = _uow.Crusts.Select(c => !string.IsNullOrWhiteSpace(c.Name)).ToList();
             Sizes = _uow.Sizes.Select(s => !string.IsNullOrWhiteSpace(s.Name)).ToList();
