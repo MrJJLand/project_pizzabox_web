@@ -1,4 +1,4 @@
-# Welcome to PizzaBox
+# PizzaBox
 
 For When You Don't Want to Be Trendy Like Your Friends For All Your Pizza Needs\n\t\t\t*********************\n\t\t\t|Welcome to PizzaBox|\n\t\t\t*********************
 
