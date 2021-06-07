@@ -4,7 +4,7 @@ namespace PizzaBox.Storing
 {
     public class UnitOfWork
     {
-        public readonly PizzaBoxContext _context;
+        public readonly PizzaBoxContext _context; 
         public CrustRepository Crusts { get; }
         public SizeRepository Sizes { get; }
         public CheeseRepository Cheeses { get; }
